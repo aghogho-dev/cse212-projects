@@ -12,6 +12,17 @@ public class TakingTurnsQueueTests
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
     // Defect(s) Found: 
+    /*
+            It is behaving like a stack that starts operation after all the elements are stacked.
+            Sue is popped out and pushed back until it completes it turn.
+            Same for Tim and Bob.
+            However, it should be a queue with FIFO. So, it should be Bob, Tim, Sue until anyone runs out of turn.
+
+            PersonQueue.cs - Enqueue method:
+                Change _queue.Insert(0, person) -> _queue.Add(person)
+
+        */
+
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -44,6 +55,11 @@ public class TakingTurnsQueueTests
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
     // Defect(s) Found: 
+    /*
+        It suffers from the defect described in Test 1.
+        Fixing the Person - Enqueue method fixes this as well.
+    
+    */
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -86,6 +102,21 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
     // Defect(s) Found: 
+    /* 
+            In addition to what is described in Test 1.
+
+            Tim should have infinite turns.
+
+            But it shows 'No one in the queue'
+
+            TakingTurnQueue - GetNextPerson method:
+                Add the code to solve the problem
+
+                else if (person.Turns <= 0)
+                {
+                    _people.Enqueue(person);
+                 }
+        */
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -117,6 +148,11 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
     // Defect(s) Found: 
+    /* 
+            In addition to behaving like a stack, Tim should have infinite number of turns.
+            Fixing the above problems fixes this.
+    */
+
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
@@ -144,6 +180,11 @@ public class TakingTurnsQueueTests
     // Scenario: Try to get the next person from an empty queue
     // Expected Result: Exception should be thrown with appropriate error message.
     // Defect(s) Found: 
+    /*
+            No defect.
+
+            No one in the queue.
+    */
     public void TestTakingTurnsQueue_Empty()
     {
         var players = new TakingTurnsQueue();
