@@ -27,15 +27,21 @@
 
         /*
             Changed: 
-                index < _queue.Count - 1 => index <= _queue.Count - 1
-                _queue[index].Priority >= _queue[highPriority].Priority => 
-                    _queue[index].Priority > _queue[highPriority].Priority
+            1.
+                (int index = 1; index < _queue.Count - 1)  
+                            TO
+                (int index= 0; index <= _queue.Count - 1)
+
+            2.
+                (_queue[index].Priority >= _queue[highPriority].Priority)
+                            TO 
+                (_queue[index].Priority > _queue[highPriority].Priority)
         */
 
 
-        for (int index = 1; index <= _queue.Count - 1; index++)
+        for (int index = 0; index <= _queue.Count - 1; index++)
         {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
+            if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
                 highPriorityIndex = index;
         }
 

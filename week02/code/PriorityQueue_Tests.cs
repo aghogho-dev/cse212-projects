@@ -26,6 +26,7 @@ public class PriorityQueueTests
 
     [TestMethod]
     // Scenario: Deque items with the values and priorities: (Study 30 minutes, 2), (Sleep 4 hours, 5), (Play Game, 0)
+    //           Check that higher prority items Dequeue's first.
     // Expected Result: Sleep 4 hours, Study 30 minutes, Play Game
     // Defect(s) Found: 
     /*
@@ -85,7 +86,8 @@ public class PriorityQueueTests
 
     [TestMethod]
     // Scenario:  Deque items with the values and priorities: (Attend class, 10), (Study 30 minutes, 2), (Sleep 4 hours, 5), (Play Game, 0), (Do research, 5)
-    // Expected Result: Attend class, Sleep 4 hours, Do research, Study 30 minutes, Play Game, Watch Movie
+    //            Check that for items with the same priority, the one at the front of Dequeue's first
+    // Expected Result: Attend class, Sleep 4 hours, Do research, Study 30 minutes, Play Game, Watch Movies
     // Defect(s) Found: 
     /* 
         There were defects related to how the items were returned
@@ -108,19 +110,19 @@ public class PriorityQueueTests
         Assert.AreEqual("Attend class", dequeueValue);
 
         dequeueValue = priorityQueue.Dequeue();
-        Assert.AreEqual("Do research", dequeueValue);
+        Assert.AreEqual("Sleep 4 hours", dequeueValue);
 
         dequeueValue = priorityQueue.Dequeue();
-        Assert.AreEqual("Sleep 4 hours", dequeueValue);
+        Assert.AreEqual("Do research", dequeueValue);
 
         dequeueValue = priorityQueue.Dequeue();
         Assert.AreEqual("Study 30 minutes", dequeueValue);
 
         dequeueValue = priorityQueue.Dequeue();
-        Assert.AreEqual("Watch Movies", dequeueValue);
+        Assert.AreEqual("Play Game", dequeueValue);
 
         dequeueValue = priorityQueue.Dequeue();
-        Assert.AreEqual("Play Game", dequeueValue);
+        Assert.AreEqual("Watch Movies", dequeueValue);
 
     }
 
