@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Text.Json;
 
 public static class SetsAndMaps
@@ -22,7 +23,24 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        HashSet<string> wordSet = new(words);
+        HashSet<string> findPairs = new();
+
+        foreach (var word in words)
+        {
+            string reversed = $"{word[1]}{word[0]}";
+            if (wordSet.Contains(reversed) && word != reversed)
+            {
+                if (!findPairs.Contains($"{word} & {reversed}"))
+                {
+                    findPairs.Add($"{reversed} & {word}");
+                }
+            }
+        }
+
+        foreach (var a in findPairs) Console.Write($"{a} ");
+
+        return findPairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +61,10 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            string degree = fields[3];
+
+            if (degrees.ContainsKey(degree)) degrees[degree]++;
+            else degrees[degree] = 1;
         }
 
         return degrees;
@@ -67,7 +89,32 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var check1 = word1.Replace(" ", "").ToLower();
+        var check2 = word2.Replace(" ", "").ToLower();
+
+        var isSameLength = check1.Length == check2.Length;
+
+        if (isSameLength)
+        {
+            Dictionary<string, int> firstDict = new();
+            Dictionary<string, int> secondDict = new();
+
+            foreach (var i in check1)
+            {
+                if (firstDict.ContainsKey(i.ToString())) firstDict[i.ToString()]++;
+                else firstDict[i.ToString()] = 1;
+            }
+
+            foreach (var j in check2)
+            {
+                if (secondDict.ContainsKey(j.ToString())) secondDict[j.ToString()]++;
+                else secondDict[j.ToString()] = 1;
+            }
+
+            return firstDict.Count == secondDict.Count && firstDict.OrderBy(x => x.Key).SequenceEqual(secondDict.OrderBy(x => x.Key));
+        }
+
+        return isSameLength;
     }
 
     /// <summary>
@@ -101,6 +148,20 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+        List<string> strList = new();
+
+        if (featureCollection != null && featureCollection.Features != null)
+        {
+            foreach (var feature in featureCollection.Features)
+            {
+                decimal mag = feature.Properties.Mag;
+                string place = feature.Properties.Place;
+
+                strList.Add($"{place} - Mag {mag}");
+            }
+        }
+
+        return strList.ToArray();
     }
 }
